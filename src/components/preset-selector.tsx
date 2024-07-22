@@ -42,13 +42,13 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                     aria-expanded={open}
                     className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
                 >
-                    {selectedPreset ? selectedPreset.name : "Load a preset..."}
+                    {selectedPreset ? selectedPreset.name : "Load a status..."}
                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[300px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search presets..." />
+                    <CommandInput placeholder="Search status..." />
                     <CommandList>
                         <CommandEmpty>No presets found.</CommandEmpty>
                         <CommandGroup heading="Examples">
@@ -72,11 +72,11 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                                 </CommandItem>
                             ))}
                         </CommandGroup>
-                        <CommandGroup className="pt-0">
+                        {/* <CommandGroup className="pt-0">
                             <CommandItem onSelect={() => router.push("/examples")}>
                                 More examples
                             </CommandItem>
-                        </CommandGroup>
+                        </CommandGroup> */}
                     </CommandList>
                 </Command>
             </PopoverContent>
