@@ -29,7 +29,7 @@ interface PresetSelectorProps extends PopoverProps {
 
 export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
     const [open, setOpen] = React.useState(false)
-    const [selectedPreset, setSelectedPreset] = React.useState<Preset>()
+    const [selectedPreset, setSelectedPreset] = React.useState<Preset>(presets[0])
     const router = useRouter()
 
     return (
@@ -51,7 +51,7 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                     <CommandInput placeholder="Search status..." />
                     <CommandList>
                         <CommandEmpty>No presets found.</CommandEmpty>
-                        <CommandGroup heading="Examples">
+                        <CommandGroup heading="">
                             {presets.map((preset) => (
                                 <CommandItem
                                     key={preset.id}

@@ -31,7 +31,7 @@ import { models, types } from "@/data/models"
 import { presets } from "@/data/presets"
 
 import { getDisplayBoardLocations } from "@/lib/directus"
-import { DisplayBoardLocations } from "@/lib/types"
+import { IData } from "@/lib/types"
 
 
 export const metadata: Metadata = {
@@ -43,27 +43,8 @@ export default async function PlaygroundPage() {
 
   const data = await getDisplayBoardLocations()
 
-  console.log(JSON.stringify(data));
-
-
-  // console.log(locations);
-  // const locations = data?.map((item) => {
-  //   return {
-  //     id: item.id,
-  //     name: item.Location_Name,
-  //     type: item.status,
-  //     desctiptions: item.Display_Boards,
-  //     strengths: {
-  //       user_created: item.user_created,
-  //       date_created: item.date_created,
-  //       user_modified: item.user_updated,
-  //       date_modified: item.date_updated
-  //     }
-  //   }
-  // })
-
-  // console.log(locations);
-
+  const result: IData[] = JSON.parse(data)
+  console.log(result);
 
 
   return (
@@ -86,7 +67,8 @@ export default async function PlaygroundPage() {
       </div>
       <div className="hidden h-full flex-col md:flex">
         <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-          <h2 className="text-lg font-semibold">Playgrounds</h2>
+          {/* <h2 className="text-lg font-semibold">Playgrounds</h2> */}
+          <Image src="/header.png" alt="Header Logo" width={100} height={50} className="w-auto h-auto" />
           <div className="ml-auto flex w-full space-x-2 sm:justify-end">
             <PresetSelector presets={presets} />
             <PresetSave />
@@ -280,17 +262,39 @@ export default async function PlaygroundPage() {
                   </TabsList>
                 </div>
                 <ModelSelector types={types} models={models} />
-                <TemperatureSelector defaultValue={[0.56]} />
-                <MaxLengthSelector defaultValue={[256]} />
-                <TopPSelector defaultValue={[0.9]} />
+                <TemperatureSelector defaultValue={[1]} />
+                {/* <MaxLengthSelector defaultValue={[256]} /> */}
+                {/* <TopPSelector defaultValue={[0.9]} /> */}
               </div>
               <div className="md:order-1">
                 <TabsContent value="complete" className="mt-0 border-0 p-0">
                   <div className="flex h-full flex-col space-y-4">
-                    <Textarea
+                    <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-auto flex flex-wrap">
+                      {
+                        Array.from({ length: 3 }).map((_, index) => (
+                          <div key={index} className="w-[226.771px] h-[99.213px] bg-white border-[1.333px] border-black rounded-[4.252px] text-black">
+                            <span>{result[0].Display_Boards[0].Board_Name}</span>
+                          </div>
+                        ))
+                      }
+                      {/* <Image
+                        src={"/template.jpg"}
+                        alt="Template Sampler"
+                        width={9999}
+                        height={9999}
+                        className="w-full h-full"
+                      /> */}
+                      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+                      {/* <pre>{
+                        JSON.stringify(result[0].Display_Boards[0].Board_Name, null, 2)
+                      }</pre> */}
+
+                    </div>
+                    {/* <Textarea
                       placeholder="Write a tagline for an ice cream shop"
-                      className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
-                    />
+                      className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] overflow-y-auto"
+                      defaultValue={JSON.stringify(data)}
+                    /> */}
                     <div className="flex items-center space-x-2">
                       <Button>Submit</Button>
                       <Button variant="secondary">

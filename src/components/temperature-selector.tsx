@@ -26,16 +26,17 @@ export function TemperatureSelector({
                 <HoverCardTrigger asChild>
                     <div className="grid gap-4">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="temperature">Temperature</Label>
+                            <Label htmlFor="temperature">Labels</Label>
                             <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                                 {value}
                             </span>
                         </div>
                         <Slider
                             id="temperature"
-                            max={1}
+                            max={14}
+                            min={1}
                             defaultValue={value}
-                            step={0.1}
+                            step={1}
                             onValueChange={setValue}
                             className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
                             aria-label="Temperature"

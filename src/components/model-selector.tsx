@@ -94,8 +94,8 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
                         </HoverCardContent>
                         <Command loop>
                             <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                                <CommandInput placeholder="Search Models..." />
-                                <CommandEmpty>No Models found.</CommandEmpty>
+                                <CommandInput placeholder="Search Locations..." />
+                                <CommandEmpty>No Location found.</CommandEmpty>
                                 <HoverCardTrigger />
                                 {types.map((type) => (
                                     <CommandGroup key={type} heading={type}>
