@@ -51,6 +51,7 @@ export async function getDisplayBoardLocations() {
           "Display_Boards.Board_Items",
           "Display_Boards.Board_Items.Board_Items",
           "Display_Boards.Board_Items.Board_Items.Code",
+          "Display_Boards.Board_Items.Board_Items.Parent_Product.Name",
           "Display_Boards.Board_Items.Board_Items.Item_Function.Function",
           "Display_Boards.Board_Items.Board_Items.Item_Finish.Finish_ID",
           "Display_Boards.Board_Items.Board_Items.Description",

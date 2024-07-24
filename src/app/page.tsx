@@ -31,7 +31,10 @@ import { models, types } from "@/data/models"
 import { presets } from "@/data/presets"
 
 import { getDisplayBoardLocations } from "@/lib/directus"
-import { IData } from "@/lib/types"
+import { IData, BoardItem } from "@/lib/types"
+
+
+import QRCode from "react-qr-code";
 
 
 export const metadata: Metadata = {
@@ -43,8 +46,10 @@ export default async function PlaygroundPage() {
 
   const data = await getDisplayBoardLocations()
 
+
+
   const result: IData[] = JSON.parse(data)
-  console.log(result);
+  // console.log(JSON.stringify(result, null, 2));
 
 
   return (
@@ -262,6 +267,7 @@ export default async function PlaygroundPage() {
                   </TabsList>
                 </div>
                 <ModelSelector types={types} models={models} />
+                <ModelSelector types={types} models={models} />
                 <TemperatureSelector defaultValue={[1]} />
                 {/* <MaxLengthSelector defaultValue={[256]} /> */}
                 {/* <TopPSelector defaultValue={[0.9]} /> */}
@@ -269,14 +275,41 @@ export default async function PlaygroundPage() {
               <div className="md:order-1">
                 <TabsContent value="complete" className="mt-0 border-0 p-0">
                   <div className="flex h-full flex-col space-y-4">
-                    <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-auto flex flex-wrap">
+                    <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-auto grid grid-cols-2 gap-x-[52px] gap-y-[25px] py-[57px] px-[105px] border border-black">
+
+
+
                       {
-                        Array.from({ length: 3 }).map((_, index) => (
-                          <div key={index} className="w-[226.771px] h-[99.213px] bg-white border-[1.333px] border-black rounded-[4.252px] text-black">
-                            <span>{result[0].Display_Boards[0].Board_Name}</span>
-                          </div>
-                        ))
+                        result[0].Display_Boards[0].Board_Items.map((item: BoardItem, index: number) => {
+                          return (
+                            <div key={index} className="w-full h-[184px] bg-white border-[2px] border-black rounded-[6px] text-black p-4 flex items-center gap-6">
+                              <div className="grow flex flex-col h-full">
+                                <span className="text-base font-bold uppercase">{item.Board_Items.Parent_Product ? item.Board_Items.Parent_Product.Name : item.Board_Items.Code}</span>
+                                <br />
+                                <p className="text-[11px]">{item.Board_Items.Code}</p>
+
+                                {
+                                  item.Board_Items.Description ? <p className="text-[11px]">{item.Board_Items.Description}</p> : ""
+                                }
+                                {
+                                  item.Board_Items.Item_Finish ? <p className="text-[11px]">Finish: {item.Board_Items.Item_Finish.Finish_ID}</p> : ""
+                                }
+                                {
+                                  item.Board_Items.Item_Function ? <p className="text-[11px]">Finish: {item.Board_Items.Item_Function.Function}</p> : ""
+                                }
+                              </div>
+                              <div className="w-[100px] flex flex-col items-center justify-center gap-3">
+                                <QRCode
+                                  value="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                  size={100}
+                                />
+                                <span className="text-xs break-words max-w-[100px]">hhttps://cleanuri.com/qX8MyN</span>
+                              </div>
+                            </div>
+                          )
+                        })
                       }
+
                       {/* <Image
                         src={"/template.jpg"}
                         alt="Template Sampler"
@@ -284,7 +317,7 @@ export default async function PlaygroundPage() {
                         height={9999}
                         className="w-full h-full"
                       /> */}
-                      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+                      {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
                       {/* <pre>{
                         JSON.stringify(result[0].Display_Boards[0].Board_Name, null, 2)
                       }</pre> */}

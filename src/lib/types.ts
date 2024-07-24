@@ -36,10 +36,14 @@ export interface BoardItems {
   Description: string;
   Item_Function: ItemFunction | null;
   Item_Finish: ItemFinish | null;
+  Parent_Product: ItemParentProduct | null;
 }
 
 export interface ItemFinish {
   Finish_ID: string;
+}
+export interface ItemParentProduct {
+  Name: string;
 }
 
 export interface ItemFunction {
