@@ -27,8 +27,8 @@ import { PresetSelector } from "@/components/preset-selector"
 import { PresetShare } from "@/components/preset-share"
 import { TemperatureSelector } from "@/components/temperature-selector"
 import { TopPSelector } from "@/components/top-p-selector"
-import { models, types } from "@/data/models"
-import { presets } from "@/data/presets"
+import { types } from "@/data/models"
+// import { presets } from "@/data/presets"
 
 import { getDisplayBoardLocations } from "@/lib/directus"
 import { IData, BoardItem } from "@/lib/types"
@@ -46,11 +46,9 @@ export default async function PlaygroundPage() {
 
   const data = await getDisplayBoardLocations()
 
-
-
   const result: IData[] = JSON.parse(data)
   // console.log(JSON.stringify(result, null, 2));
-
+  const locations = result.map((item) => { return { id: item.id, name: item.Location_Name } })
 
   return (
     <>
@@ -75,13 +73,13 @@ export default async function PlaygroundPage() {
           {/* <h2 className="text-lg font-semibold">Playgrounds</h2> */}
           <Image src="/header.png" alt="Header Logo" width={100} height={50} className="w-auto h-auto" />
           <div className="ml-auto flex w-full space-x-2 sm:justify-end">
-            <PresetSelector presets={presets} />
-            <PresetSave />
+            <PresetSelector presets={locations} />
+            {/* <PresetSave />
             <div className="hidden space-x-2 md:flex">
               <CodeViewer />
               <PresetShare />
-            </div>
-            <PresetActions />
+            </div> */}
+            {/* <PresetActions /> */}
           </div>
         </div>
         <Separator />
@@ -90,7 +88,7 @@ export default async function PlaygroundPage() {
             <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
               <div className="hidden flex-col space-y-4 sm:flex md:order-2">
                 <div className="grid gap-2">
-                  <HoverCard openDelay={200}>
+                  {/* <HoverCard openDelay={200}>
                     <HoverCardTrigger asChild>
                       <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                         Mode
@@ -102,8 +100,8 @@ export default async function PlaygroundPage() {
                       text to insert a completion within, or some text with
                       instructions to edit it.
                     </HoverCardContent>
-                  </HoverCard>
-                  <TabsList className="grid grid-cols-3">
+                  </HoverCard> */}
+                  {/* <TabsList className="grid grid-cols-3">
                     <TabsTrigger value="complete">
                       <span className="sr-only">Complete</span>
                       <svg
@@ -264,11 +262,11 @@ export default async function PlaygroundPage() {
                         ></path>
                       </svg>
                     </TabsTrigger>
-                  </TabsList>
+                  </TabsList> */}
                 </div>
-                <ModelSelector types={types} models={models} />
-                <ModelSelector types={types} models={models} />
-                <TemperatureSelector defaultValue={[1]} />
+                {/* <ModelSelector types={types} models={} data={result} /> */}
+
+                {/* <TemperatureSelector defaultValue={[1]} /> */}
                 {/* <MaxLengthSelector defaultValue={[256]} /> */}
                 {/* <TopPSelector defaultValue={[0.9]} /> */}
               </div>
@@ -279,7 +277,7 @@ export default async function PlaygroundPage() {
 
 
 
-                      {
+                      {/* {
                         result[0].Display_Boards[0].Board_Items.map((item: BoardItem, index: number) => {
                           return (
                             <div key={index} className="w-full h-[184px] bg-white border-[2px] border-black rounded-[6px] text-black p-4 flex items-center gap-6">
@@ -295,7 +293,7 @@ export default async function PlaygroundPage() {
                                   item.Board_Items.Item_Finish ? <p className="text-[11px]">Finish: {item.Board_Items.Item_Finish.Finish_ID}</p> : ""
                                 }
                                 {
-                                  item.Board_Items.Item_Function ? <p className="text-[11px]">Finish: {item.Board_Items.Item_Function.Function}</p> : ""
+                                  item.Board_Items.Item_Function ? <p className="text-[11px]">Function: {item.Board_Items.Item_Function.Function}</p> : ""
                                 }
                               </div>
                               <div className="w-[100px] flex flex-col items-center justify-center gap-3">
@@ -308,7 +306,7 @@ export default async function PlaygroundPage() {
                             </div>
                           )
                         })
-                      }
+                      } */}
 
                       {/* <Image
                         src={"/template.jpg"}
@@ -317,7 +315,7 @@ export default async function PlaygroundPage() {
                         height={9999}
                         className="w-full h-full"
                       /> */}
-                      {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
+                      <pre>{JSON.stringify(result, null, 2)}</pre>
                       {/* <pre>{
                         JSON.stringify(result[0].Display_Boards[0].Board_Name, null, 2)
                       }</pre> */}
@@ -329,11 +327,11 @@ export default async function PlaygroundPage() {
                       defaultValue={JSON.stringify(data)}
                     /> */}
                     <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
+                      <Button>Download</Button>
+                      {/* <Button variant="secondary">
                         <span className="sr-only">Show history</span>
                         <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </TabsContent>
@@ -347,11 +345,11 @@ export default async function PlaygroundPage() {
                       <div className="rounded-md border bg-muted"></div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
+                      <Button>Download</Button>
+                      {/* <Button variant="secondary">
                         <span className="sr-only">Show history</span>
                         <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </TabsContent>
@@ -378,11 +376,11 @@ export default async function PlaygroundPage() {
                       <div className="mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[700px]" />
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
+                      <Button>Download</Button>
+                      {/* <Button variant="secondary">
                         <span className="sr-only">Show history</span>
                         <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </TabsContent>

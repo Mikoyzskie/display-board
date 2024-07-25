@@ -14,6 +14,7 @@ export interface Datum {
 }
 
 export interface IData {
+  id: number;
   status: string;
   Location_Name: string;
   date_created: Date;

@@ -23,14 +23,22 @@ import {
 
 import { Preset } from "../data/presets"
 
+import { RootState } from "@/redux/store"
+import { useSelector, useDispatch } from "react-redux"
+import { changeLocation } from "@/redux/features/location/location_slicer"
+
 interface PresetSelectorProps extends PopoverProps {
     presets: Preset[]
 }
 
 export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
     const [open, setOpen] = React.useState(false)
-    const [selectedPreset, setSelectedPreset] = React.useState<Preset>(presets[0])
+    const [selectedPreset, setSelectedPreset] = React.useState<Preset>()
     const router = useRouter()
+
+    const location = useSelector((state: RootState) => state.location.value)
+    const dispatch = useDispatch();
+
 
     return (
         <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -38,17 +46,17 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                 <Button
                     variant="outline"
                     role="combobox"
-                    aria-label="Load a preset..."
+                    aria-label="Load a Location..."
                     aria-expanded={open}
                     className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
                 >
-                    {selectedPreset ? selectedPreset.name : "Load a status..."}
+                    {selectedPreset ? selectedPreset.name : "Load a location..."}
                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[300px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search status..." />
+                    <CommandInput placeholder="Search Location..." />
                     <CommandList>
                         <CommandEmpty>No presets found.</CommandEmpty>
                         <CommandGroup heading="">
@@ -58,6 +66,7 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                                     onSelect={() => {
                                         setSelectedPreset(preset)
                                         setOpen(false)
+                                        dispatch(changeLocation(preset.id))
                                     }}
                                 >
                                     {preset.name}

@@ -40,6 +40,7 @@ export async function getDisplayBoardLocations() {
     const response = await apiClient?.request(
       readItems(displayBoardLocations, {
         fields: [
+          "id",
           "status",
           "Location_Name",
           "date_created",

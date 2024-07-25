@@ -28,30 +28,42 @@ import {
 } from "@/components/ui/popover"
 
 import { Model, ModelType } from "@/data/models"
+import { IData, DisplayBoard } from "@/lib/types"
+
+import { RootState } from "@/redux/store"
+import { useSelector, useDispatch } from "react-redux"
+import { changeLocation } from "@/redux/features/location/location_slicer"
 
 interface ModelSelectorProps extends PopoverProps {
     types: readonly ModelType[]
     models: Model[]
+    data: IData[]
 }
 
-export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
+export function ModelSelector({ models, types, data, ...props }: ModelSelectorProps) {
     const [open, setOpen] = React.useState(false)
-    const [selectedModel, setSelectedModel] = React.useState<Model>(models[0])
+    const [selectedModel, setSelectedModel] = React.useState<Model>()
     const [peekedModel, setPeekedModel] = React.useState<Model>(models[0])
+
+    const location = useSelector((state: RootState) => state.location.value)
+
+    const test = data.filter((item) => item.id === location)
+
+    console.log(location);
+
 
     return (
         <div className="grid gap-2">
             <HoverCard openDelay={200}>
                 <HoverCardTrigger asChild>
-                    <Label htmlFor="model">Locations</Label>
+                    <Label htmlFor="model">Display Boards</Label>
                 </HoverCardTrigger>
                 <HoverCardContent
                     align="start"
                     className="w-[260px] text-sm"
                     side="left"
                 >
-                    The model which will generate the completion. Some models are suitable
-                    for natural language tasks, others specialize in code. Learn more.
+                    Display Board you wish to get data
                 </HoverCardContent>
             </HoverCard>
             <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -63,7 +75,7 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
                         aria-label="Select a model"
                         className="w-full justify-between"
                     >
-                        {selectedModel ? selectedModel.name : "Select a model..."}
+                        {selectedModel ? selectedModel.name : "Select Display Board..."}
                         <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
@@ -94,10 +106,10 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
                         </HoverCardContent>
                         <Command loop>
                             <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                                <CommandInput placeholder="Search Locations..." />
+                                <CommandInput placeholder="Search Board..." />
                                 <CommandEmpty>No Location found.</CommandEmpty>
                                 <HoverCardTrigger />
-                                {types.map((type) => (
+                                {location && types.map((type) => (
                                     <CommandGroup key={type} heading={type}>
                                         {models
                                             .filter((model) => model.type === type)
