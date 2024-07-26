@@ -30,26 +30,41 @@ import {
 import { Model, ModelType } from "@/data/models"
 import { IData, DisplayBoard } from "@/lib/types"
 
-import { RootState } from "@/redux/store"
-import { useSelector, useDispatch } from "react-redux"
-import { changeLocation } from "@/redux/features/location/location_slicer"
+
 
 interface ModelSelectorProps extends PopoverProps {
     types: readonly ModelType[]
-    models: Model[]
-    data: IData[]
+    models: IData[]
+    locationId: number
 }
 
-export function ModelSelector({ models, types, data, ...props }: ModelSelectorProps) {
+export function ModelSelector({ models, locationId, types, ...props }: ModelSelectorProps) {
     const [open, setOpen] = React.useState(false)
     const [selectedModel, setSelectedModel] = React.useState<Model>()
-    const [peekedModel, setPeekedModel] = React.useState<Model>(models[0])
+    const [peekedModel, setPeekedModel] = React.useState<Model>()
+    const [model, setModel] = React.useState<Model[]>()
 
-    const location = useSelector((state: RootState) => state.location.value)
+    const location = models.find((item) => item.id === locationId)
 
-    const test = data.filter((item) => item.id === location)
+    React.useEffect(() => {
+        if (location) {
+            const boards = location.Display_Boards.map((item, index) => {
 
-    console.log(location);
+                // const description 
+
+                return {
+                    id: `${index}`,
+                    name: item.Board_Name,
+                    description: JSON.stringify(item.Board_Items.map((x) => x.Board_Items.Parent_Product?.Name), null, 2),
+                    type: item.status,
+                }
+            })
+            setModel(boards)
+        }
+    }, [location])
+
+
+
 
 
     return (
@@ -88,11 +103,11 @@ export function ModelSelector({ models, types, data, ...props }: ModelSelectorPr
                             className="min-h-[280px]"
                         >
                             <div className="grid gap-2">
-                                <h4 className="font-medium leading-none">{peekedModel.name}</h4>
+                                <h4 className="font-medium leading-none">{peekedModel?.name}</h4>
                                 <div className="text-sm text-muted-foreground">
-                                    {peekedModel.description}
+                                    {peekedModel?.description}
                                 </div>
-                                {peekedModel.strengths ? (
+                                {peekedModel?.strengths ? (
                                     <div className="mt-4 grid gap-2">
                                         <h5 className="text-sm font-medium leading-none">
                                             Strengths
@@ -109,24 +124,26 @@ export function ModelSelector({ models, types, data, ...props }: ModelSelectorPr
                                 <CommandInput placeholder="Search Board..." />
                                 <CommandEmpty>No Location found.</CommandEmpty>
                                 <HoverCardTrigger />
-                                {location && types.map((type) => (
-                                    <CommandGroup key={type} heading={type}>
-                                        {models
-                                            .filter((model) => model.type === type)
-                                            .map((model) => (
-                                                <ModelItem
-                                                    key={model.id}
-                                                    model={model}
-                                                    isSelected={selectedModel?.id === model.id}
-                                                    onPeek={(model) => setPeekedModel(model)}
-                                                    onSelect={() => {
-                                                        setSelectedModel(model)
-                                                        setOpen(false)
-                                                    }}
-                                                />
-                                            ))}
-                                    </CommandGroup>
-                                ))}
+                                {location && types.map((type) => {
+                                    return (
+                                        <CommandGroup key={type} heading={type}>
+                                            {model && model
+                                                .filter((model) => model.type === type)
+                                                .map((model) => (
+                                                    <ModelItem
+                                                        key={model.id}
+                                                        model={model}
+                                                        isSelected={selectedModel?.id === model.id}
+                                                        onPeek={(model) => setPeekedModel(model)}
+                                                        onSelect={() => {
+                                                            setSelectedModel(model)
+                                                            setOpen(false)
+                                                        }}
+                                                    />
+                                                ))}
+                                        </CommandGroup>
+                                    )
+                                })}
                             </CommandList>
                         </Command>
                     </HoverCard>

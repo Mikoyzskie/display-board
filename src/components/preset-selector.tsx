@@ -23,10 +23,6 @@ import {
 
 import { Preset } from "../data/presets"
 
-import { RootState } from "@/redux/store"
-import { useSelector, useDispatch } from "react-redux"
-import { changeLocation } from "@/redux/features/location/location_slicer"
-
 interface PresetSelectorProps extends PopoverProps {
     presets: Preset[]
 }
@@ -35,10 +31,6 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
     const [open, setOpen] = React.useState(false)
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>()
     const router = useRouter()
-
-    const location = useSelector((state: RootState) => state.location.value)
-    const dispatch = useDispatch();
-
 
     return (
         <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -66,7 +58,6 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                                     onSelect={() => {
                                         setSelectedPreset(preset)
                                         setOpen(false)
-                                        dispatch(changeLocation(preset.id))
                                     }}
                                 >
                                     {preset.name}
