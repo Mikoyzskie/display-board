@@ -36,24 +36,24 @@ interface ModelSelectorProps extends PopoverProps {
     types: readonly ModelType[]
     models: IData[]
     locationId: number
+    locationAvailability: boolean
+    setBoard: any
 }
 
-export function ModelSelector({ models, locationId, types, ...props }: ModelSelectorProps) {
-    const [open, setOpen] = React.useState(false)
+export function ModelSelector({ models, locationId, locationAvailability, types, setBoard, ...props }: ModelSelectorProps) {
+    const [open, setOpen] = React.useState(locationAvailability)
     const [selectedModel, setSelectedModel] = React.useState<Model>()
     const [peekedModel, setPeekedModel] = React.useState<Model>()
     const [model, setModel] = React.useState<Model[]>()
+    const [isDisabled, setIsDisabled] = React.useState<boolean>(true)
 
     const location = models.find((item) => item.id === locationId)
 
     React.useEffect(() => {
         if (location) {
-            const boards = location.Display_Boards.map((item, index) => {
-
-                // const description 
-
+            const boards = location.Display_Boards.map((item) => {
                 return {
-                    id: `${index}`,
+                    id: item.id,
                     name: item.Board_Name,
                     description: JSON.stringify(item.Board_Items.map((x) => x.Board_Items.Parent_Product?.Name), null, 2),
                     type: item.status,
@@ -61,7 +61,15 @@ export function ModelSelector({ models, locationId, types, ...props }: ModelSele
             })
             setModel(boards)
         }
-    }, [location])
+        console.log(locationAvailability);
+
+
+        if (locationAvailability) {
+            setIsDisabled(false)
+        }
+
+    }, [location, locationAvailability])
+
 
 
 
@@ -89,6 +97,7 @@ export function ModelSelector({ models, locationId, types, ...props }: ModelSele
                         aria-expanded={open}
                         aria-label="Select a model"
                         className="w-full justify-between"
+                        disabled={isDisabled}
                     >
                         {selectedModel ? selectedModel.name : "Select Display Board..."}
                         <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -104,8 +113,14 @@ export function ModelSelector({ models, locationId, types, ...props }: ModelSele
                         >
                             <div className="grid gap-2">
                                 <h4 className="font-medium leading-none">{peekedModel?.name}</h4>
-                                <div className="text-sm text-muted-foreground">
-                                    {peekedModel?.description}
+                                <div className="text-sm text-muted-foreground mt-5">
+                                    {peekedModel &&
+                                        JSON.parse(peekedModel.description).map((item: string, index: number) => {
+                                            return (
+                                                <p key={index}>{item}</p>
+                                            )
+                                        })
+                                    }
                                 </div>
                                 {peekedModel?.strengths ? (
                                     <div className="mt-4 grid gap-2">
@@ -124,25 +139,34 @@ export function ModelSelector({ models, locationId, types, ...props }: ModelSele
                                 <CommandInput placeholder="Search Board..." />
                                 <CommandEmpty>No Location found.</CommandEmpty>
                                 <HoverCardTrigger />
-                                {location && types.map((type) => {
-                                    return (
-                                        <CommandGroup key={type} heading={type}>
-                                            {model && model
-                                                .filter((model) => model.type === type)
-                                                .map((model) => (
-                                                    <ModelItem
-                                                        key={model.id}
-                                                        model={model}
-                                                        isSelected={selectedModel?.id === model.id}
-                                                        onPeek={(model) => setPeekedModel(model)}
-                                                        onSelect={() => {
-                                                            setSelectedModel(model)
-                                                            setOpen(false)
-                                                        }}
-                                                    />
-                                                ))}
-                                        </CommandGroup>
-                                    )
+                                {model && types.map((type) => {
+
+                                    const test = model.find((item) => item.type === type);
+                                    if (test) {
+                                        return (
+                                            <CommandGroup key={type} heading={type}>
+                                                {model
+                                                    .filter((model) => model.type === type)
+                                                    .map((model) => (
+                                                        <ModelItem
+                                                            key={model.id}
+                                                            model={model}
+                                                            isSelected={selectedModel?.id === model.id}
+                                                            onPeek={(model) => setPeekedModel(model)}
+                                                            onSelect={() => {
+                                                                setSelectedModel(model)
+                                                                setOpen(false)
+                                                                setBoard(model.id)
+                                                            }}
+                                                        />
+                                                    ))}
+                                            </CommandGroup>
+                                        )
+                                    } else {
+                                        return
+                                    }
+
+
                                 })}
                             </CommandList>
                         </Command>

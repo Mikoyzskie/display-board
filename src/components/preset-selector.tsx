@@ -25,9 +25,10 @@ import { Preset } from "../data/presets"
 
 interface PresetSelectorProps extends PopoverProps {
     presets: Preset[]
+    setLocation: any
 }
 
-export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
+export function PresetSelector({ presets, setLocation, ...props }: PresetSelectorProps) {
     const [open, setOpen] = React.useState(false)
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>()
     const router = useRouter()
@@ -58,6 +59,7 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
                                     onSelect={() => {
                                         setSelectedPreset(preset)
                                         setOpen(false)
+                                        setLocation(preset.id)
                                     }}
                                 >
                                     {preset.name}

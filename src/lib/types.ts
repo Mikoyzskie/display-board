@@ -23,6 +23,7 @@ export interface IData {
 }
 
 export interface DisplayBoard {
+  id: string;
   status: string;
   Board_Name: string;
   Board_Items: BoardItem[];

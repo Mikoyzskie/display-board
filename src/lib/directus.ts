@@ -48,6 +48,7 @@ export async function getDisplayBoardLocations() {
           "user_created.last_name",
           "user_created.avatar",
           "Display_Boards",
+          "Display_Boards.id",
           "Display_Boards.status",
           "Display_Boards.Board_Name",
           "Display_Boards.Board_Items",
