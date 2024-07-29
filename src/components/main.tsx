@@ -14,7 +14,10 @@ import { types } from "@/data/models"
 import QRCode from "react-qr-code";
 import { models } from "@/data/models"
 import { BoardItem, IData, DisplayBoard } from "@/lib/types"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
+
+import ToPrintElement from "./PDF/ToPrintElement"
+import { useReactToPrint } from 'react-to-print';
 
 export default function Main({ location }: { location: IData[] }) {
 
@@ -37,6 +40,11 @@ export default function Main({ location }: { location: IData[] }) {
     const locations = location.map((item) => { return { id: item.id, name: item.Location_Name } })
 
     // .map((item) => { return { id: item.id, name: item.Location_Name } })
+
+    const componentRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
 
 
     return (
@@ -64,7 +72,12 @@ export default function Main({ location }: { location: IData[] }) {
                         <div className="md:order-1">
                             <TabsContent value="complete" className="mt-0 border-0 p-0">
                                 <div className="flex h-full flex-col space-y-4">
-                                    <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-auto grid grid-cols-2 gap-x-[52px] gap-y-[25px] py-[57px] px-[105px] border border-black">
+                                    <div ref={componentRef}>
+                                        <ToPrintElement boards={boards!} />
+
+                                    </div>
+
+                                    {/* <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-auto grid grid-cols-2 gap-x-[52px] gap-y-[25px] py-[57px] px-[105px] border border-black">
 
                                         {boards &&
                                             boards.Board_Items.map((item: BoardItem, index: number) => {
@@ -96,11 +109,11 @@ export default function Main({ location }: { location: IData[] }) {
                                                 )
                                             })
                                         }
-                                        {/* <pre>{JSON.stringify(location, null, 2)}</pre> */}
 
-                                    </div>
+                                    </div> */}
+                                    {/* <pre>{JSON.stringify(location, null, 2)}</pre> */}
                                     <div className="flex items-center space-x-2">
-                                        <Button>Download</Button>
+                                        <Button onClick={handlePrint}>Download</Button>
                                     </div>
                                 </div>
                             </TabsContent>
