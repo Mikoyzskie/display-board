@@ -4,7 +4,7 @@ import QRCode from "react-qr-code"
 
 export default function ToPrintElement({ boards }: { boards: DisplayBoard }) {
     return (
-        <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-hidden grid grid-cols-2 gap-x-[52px] gap-y-[25px] py-[57px] px-[105px] border border-black">
+        <div className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:max-h-[700px] max-w-[1112px] overflow-y-hidden grid grid-cols-2 gap-x-[52px] gap-y-[25px] py-[57px] px-[105px]">
             {boards &&
                 boards.Board_Items.map((item: BoardItem, index: number) => {
                     return (
@@ -38,7 +38,7 @@ export default function ToPrintElement({ boards }: { boards: DisplayBoard }) {
             {boards &&
                 boards.Board_Items.length < 14 ?
                 Array.from({ length: 14 - boards.Board_Items.length }).map((_, index: number) => (
-                    <div key={index} className="w-full h-[184px] bg-white border-[2px] border-black rounded-[6px] text-black p-4 flex items-center gap-6">test</div>
+                    <div key={index} className="w-full h-[184px] bg-white border-[2px] border-black rounded-[6px] text-black p-4 flex items-center gap-6"></div>
                 ))
                 : ""
             }

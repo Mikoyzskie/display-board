@@ -113,7 +113,7 @@ export default function Main({ location }: { location: IData[] }) {
                                     </div> */}
                                     {/* <pre>{JSON.stringify(location, null, 2)}</pre> */}
                                     <div className="flex items-center space-x-2">
-                                        <Button onClick={handlePrint}>Download</Button>
+                                        <Button onClick={handlePrint}>Print Document</Button>
                                     </div>
                                 </div>
                             </TabsContent>
