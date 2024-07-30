@@ -35,13 +35,13 @@ export default function ToPrintElement({ boards }: { boards: DisplayBoard }) {
                     )
                 })
             }
-            {boards &&
+            {/* {boards &&
                 boards.Board_Items.length < 29 ?
                 Array.from({ length: 29 - boards.Board_Items.length }).map((_, index: number) => (
                     <div key={index} className="w-full h-[184px] bg-white border-[2px] border-black rounded-[6px] text-black p-4 flex items-center gap-6"></div>
                 ))
                 : ""
-            }
+            } */}
         </div>
     )
 }
