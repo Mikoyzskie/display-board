@@ -8,7 +8,7 @@ export default function ToPrintElement({ boards }: { boards: DisplayBoard }) {
             {boards &&
                 boards.Board_Items.map((item: BoardItem, index: number) => {
                     return (
-                        <div key={index} className="w-full h-[184px] bg-white border-[2px] border-black rounded-[6px] text-black p-4 flex items-center gap-6">
+                        <div key={index} className="w-full h-[184px] bg-white rounded-[6px] text-black p-4 flex items-center gap-6">
                             <div className="grow flex flex-col h-full">
                                 <span className="text-base font-bold uppercase">{item.Board_Items.Parent_Product ? item.Board_Items.Parent_Product.Name : item.Board_Items.Code}</span>
                                 <br />
