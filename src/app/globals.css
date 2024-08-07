@@ -104,3 +104,11 @@
 div.labels-container div:nth-child(14n) {
   margin-bottom: 99px;
 }
+
+.board-item {
+  background: url("../../public/header.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 100%);
+}
